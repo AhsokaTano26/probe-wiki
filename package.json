@@ -1,0 +1,27 @@
+{
+  "name": "cqu-netprobe-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/build.mjs",
+    "preview": "vite preview",
+    "pack": "npm run build && cd dist && rm -f ../site.zip && zip -rq ../site.zip .",
+    "deploy": "npm run build && cd dist && npx zeabur@latest deploy",
+    "build:dom": "vite build --config vite.dom.config.js",
+    "check:assets": "node scripts/audit-svgs.mjs && node scripts/compare-logo.mjs",
+    "check:fidelity": "vite build --ssr scripts/ssr-entry.js --outDir dist-ssr && node scripts/compare.mjs",
+    "check:interactions": "npm run build:dom && node scripts/interaction-check.mjs",
+    "check:hydration": "npm run build && npm run build:dom && node scripts/hydration-check.mjs",
+    "check": "npm run check:assets && npm run check:fidelity && npm run check:interactions && npm run check:hydration"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "jsdom": "^30.0.1",
+    "vite": "^6.0.7"
+  }
+}
