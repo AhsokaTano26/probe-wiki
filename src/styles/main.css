@@ -1983,8 +1983,8 @@
    Additions on top of the original stylesheet
    ========================================================= */
 
-/* The status card offers two dashboards side by side: the availability
-   status page and the Grafana packet-loss board. */
+/* The status card highlights the overview, with secondary links to the
+   availability status page and the Grafana packet-loss board. */
 
 .status-action {
   display: flex;

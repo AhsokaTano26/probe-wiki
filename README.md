@@ -83,22 +83,25 @@ scripts/
 
 ## 状态入口
 
-对外提供两个监测入口，都是新标签页打开：
+对外提供一个信息总览面板和两个详细监测入口，都是新标签页打开：
 
 | 入口 | 地址 | 出现位置 |
 |---|---|---|
+| 信息总览 | `https://netwatch.lanunion.org.cn` | 首屏按钮、状态卡片、导航栏、页脚 |
 | 网络状态 | `https://status.tano.asia/status/net` | 首屏按钮、状态卡片、导航栏、页脚 |
-| 丢包检测 | `http://grafana.tano.asia/public-dashboards/86d7f554f8704d99961fc05a4c481f44` | 首屏按钮、状态卡片、导航栏、页脚 |
+| 丢包检测 | `https://grafana.tano.asia/public-dashboards/a1f8f14d4c074a2ebf2c142f639a1981` | 首屏按钮、状态卡片、导航栏、页脚 |
+
+信息总览作为所有监测信息的统一入口，在状态卡片中作为主操作展示。
 
 丢包检测是 Grafana 公开面板「CQU NetProbe · 校园网丢包状态」，按校区与园区
 （A 区、B 区、C 区、虎溪、兰园、荷园、梅园、松园、竹园、菊园、两江）分组展示。
 
-首屏 `.hero-actions` 里是三个按钮：主操作「接入探测节点」用 `.button-primary`，
-两个监测入口用 `.button-secondary`（两者是同级视图，样式保持一致）。该容器原本
+首屏 `.hero-actions` 里是四个按钮：主操作「接入探测节点」用 `.button-primary`，
+三个监测入口用 `.button-secondary`。该容器原本
 就是 flex + wrap + gap，所以新增按钮不需要改样式；640px 以下会自动竖排铺满。
 
-状态卡片里第一个按钮是白色实心（主操作），第二个用 `.button-ghost` 描边样式，
-避免两个同权重按钮并排。除这条新增规则外，样式都集中在 `src/styles/main.css`
+状态卡片里「查看信息总览」是白色实心（主操作），网络状态和丢包检测用
+`.button-ghost` 描边样式。除这条新增规则外，样式都集中在 `src/styles/main.css`
 末尾的「Additions on top of the original stylesheet」段落，原始样式保持未改动。
 
 ## 部署到 Zeabur
@@ -141,6 +144,7 @@ npx zeabur@latest deploy
 | 改动 | 比对时的处理 |
 |---|---|
 | 三处 Logo 统一为 `logo.svg`（原页示意图中心与页脚用的是删掉内部线框的残缺版） | 两侧都归一化为 logo.svg；几何形状另由 `compare-logo.mjs` 校验 |
+| 新增信息总览入口（首屏、状态卡片、导航栏、页脚）及说明，网络状态降为次级操作 | 比对前剔除新增入口及说明、归一化网络状态按钮样式；交互检查断言入口、说明及主次样式 |
 | 新增丢包检测入口（首屏、状态卡片、导航栏、页脚） | 比对前剔除，交互检查断言四个入口都在 |
 | Docker 说明里新增两个占位符的含义 | 比对前剔除，交互检查断言说明存在 |
 | Docker 镜像 tag 从 `:1` 固定到 `sha-438bd5530c76` | 两侧 tag 归一化为 `TAG`，交互检查断言实际 tag |
@@ -166,11 +170,11 @@ npm run check:hydration    # 构建产物能否干净地 hydrate
 - `check:fidelity`：将 Vue 应用服务端渲染后与 `reference-original.html` 逐项对比
   元素序列、完整 SVG 标记（含 `d`）、文案与 `<pre>` 内容。
 - `check:interactions`：在 jsdom 中挂载真实应用，验证部署标签切换、四个复制按钮
-  （含剪贴板失败回退）、移动端导航开合、三处 Logo 都渲染完整版，以及四个丢包入口。
+  （含剪贴板失败回退）、移动端导航开合、三处 Logo 都渲染完整版，以及信息总览和丢包检测的各四个入口。
 - `check:hydration`：读取真实的 `dist/index.html`，把 `#app` 里的预渲染标记交给
   客户端包 hydrate，验证标记未被改动、Vue 没有报 hydration 警告，且页面仍然可交互。
 
-`check:fidelity` 会剔除新增的丢包入口再比对，`check:interactions` 则断言它们存在——
+`check:fidelity` 会剔除新增的信息总览和丢包入口再比对，`check:interactions` 则断言它们存在——
 两边互相咬合，删掉任何一个都会报错。
 
 图标或 Logo 更新后运行 `node scripts/extract-icons.mjs` 重新生成 `src/data/icons.js`。

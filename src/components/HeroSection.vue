@@ -1,6 +1,6 @@
 <script setup>
 import AppIcon from './AppIcon.vue'
-import { nodeGateway, packetLoss, statusPage } from '@/data/links'
+import { nodeGateway, overviewDashboard, packetLoss, statusPage } from '@/data/links'
 
 const meta = [
   { icon: 'checkCircle', label: '开源探针' },
@@ -41,6 +41,17 @@ const meta = [
             接入探测节点
 
             <AppIcon name="arrowRightRound" />
+          </a>
+
+          <a
+            class="button button-secondary"
+            :href="overviewDashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <AppIcon name="chart" />
+
+            查看信息总览
           </a>
 
           <a

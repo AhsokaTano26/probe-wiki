@@ -2,6 +2,9 @@
  * External links, in one place so a domain or path change is a single edit.
  */
 
+/** 所有监测信息的总览面板 */
+export const overviewDashboard = 'https://netwatch.lanunion.org.cn'
+
 /** 可用性状态页 */
 export const statusPage = 'https://status.tano.asia/status/net'
 
@@ -20,6 +23,7 @@ export const githubReleases =
   'https://github.com/AhsokaTano26/cqu-netprobe/releases/tag/v1.0.0'
 
 export default {
+  overviewDashboard,
   statusPage,
   packetLoss,
   nodeGateway,

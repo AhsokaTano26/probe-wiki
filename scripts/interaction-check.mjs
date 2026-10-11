@@ -105,22 +105,27 @@ check(
   !dockerCommand.includes('cqu-netprobe-gateway'),
 )
 
-/* ------------------------------------------------- packet-loss dashboard */
+/* -------------------------------------------------- monitoring dashboards */
 
 const GRAFANA =
-  'http://grafana.tano.asia/public-dashboards/86d7f554f8704d99961fc05a4c481f44'
+  'https://grafana.tano.asia/public-dashboards/a1f8f14d4c074a2ebf2c142f639a1981'
 
 const grafanaLinks = $$(`a[href="${GRAFANA}"]`)
+const overviewLinks = $$('a[href="https://netwatch.lanunion.org.cn"]')
 
 check(
-  'packet-loss board linked from hero, navbar, footer and status card',
-  grafanaLinks.length === 4,
-  `found ${grafanaLinks.length}`,
+  'monitoring dashboards linked from hero, navbar, footer and status card',
+  ['.hero-actions', '.nav-links', '.footer-links', '.status-action'].every(
+    (selector) =>
+      grafanaLinks.some((a) => $(selector).contains(a)) &&
+      overviewLinks.some((a) => $(selector).contains(a)),
+  ) && grafanaLinks.length === 4 && overviewLinks.length === 4,
+  `found ${grafanaLinks.length} packet-loss links and ${overviewLinks.length} overview links`,
 )
 
 check(
-  'packet-loss links open in a new tab safely',
-  grafanaLinks.every(
+  'dashboard links open in a new tab safely',
+  [...grafanaLinks, ...overviewLinks].every(
     (a) =>
       a.getAttribute('target') === '_blank' &&
       (a.getAttribute('rel') ?? '').includes('noopener'),
@@ -128,8 +133,12 @@ check(
 )
 
 check(
-  'status card offers both dashboards',
-  $$('.status-action .button').length === 2,
+  'status card highlights the overview and offers all three dashboards',
+  $$('.status-action .button').length === 3 &&
+    $('.status-action .button').getAttribute('href') === 'https://netwatch.lanunion.org.cn' &&
+    !$('.status-action .button').classList.contains('button-ghost') &&
+    $$('.status-action .button-ghost').length === 2 &&
+    $('.overview-description')?.textContent.includes('所有监测信息'),
   `found ${$$('.status-action .button').length} buttons`,
 )
 
@@ -144,8 +153,9 @@ check(
 )
 
 check(
-  'hero offers both dashboards next to each other',
-  $$('.hero-actions .button').length === 3 &&
+  'hero offers the overview and both detailed dashboards',
+  $$('.hero-actions .button').length === 4 &&
+    $('.hero-actions').textContent.includes('查看信息总览') &&
     $('.hero-actions').textContent.includes('查看网络状态') &&
     $('.hero-actions').textContent.includes('丢包检测'),
   `hero has ${$$('.hero-actions .button').length} buttons`,

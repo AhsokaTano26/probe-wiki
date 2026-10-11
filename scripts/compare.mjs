@@ -143,6 +143,19 @@ function svgMarkup(html) {
    cannot hide a regression. */
 const ADDITIONS = [
   {
+    what: 'overview dashboard links (hero, navbar, footer, status card)',
+    pattern: /<a\b[^>]*netwatch\.lanunion\.org\.cn[^>]*>[\s\S]*?<\/a>/g,
+  },
+  {
+    what: 'overview dashboard description',
+    pattern: /<span class="overview-description">[\s\S]*?<\/span>/g,
+  },
+  {
+    what: 'availability status link becomes a secondary action',
+    pattern: /(<a class=")button button-ghost(" href="https:\/\/status\.tano\.asia\/status\/net")/g,
+    replacement: '$1button$2',
+  },
+  {
     what: 'packet-loss dashboard links (hero, navbar, footer, status card)',
     pattern: /<a\b[^>]*grafana\.tano\.asia[^>]*>[\s\S]*?<\/a>/g,
   },
@@ -153,7 +166,10 @@ const ADDITIONS = [
 ]
 
 function removeAdditions(html) {
-  return ADDITIONS.reduce((acc, { pattern }) => acc.replace(pattern, ''), html)
+  return ADDITIONS.reduce(
+    (acc, { pattern, replacement = '' }) => acc.replace(pattern, replacement),
+    html,
+  )
 }
 
 /* The Docker command pins a specific probe build; the original page used the

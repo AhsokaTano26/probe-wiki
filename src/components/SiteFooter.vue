@@ -1,9 +1,10 @@
 <script setup>
 import AppIcon from './AppIcon.vue'
-import { githubRepo, nodeGateway, packetLoss, statusPage } from '@/data/links'
+import { githubRepo, nodeGateway, overviewDashboard, packetLoss, statusPage } from '@/data/links'
 
 const links = [
   { label: '节点管理', href: nodeGateway },
+  { label: '信息总览', href: overviewDashboard },
   { label: '网络状态', href: statusPage },
   { label: '丢包检测', href: packetLoss },
   { label: 'GitHub', href: githubRepo },

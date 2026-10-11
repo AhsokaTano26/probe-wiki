@@ -1,6 +1,6 @@
 <script setup>
 import AppIcon from './AppIcon.vue'
-import { packetLoss, statusPage } from '@/data/links'
+import { overviewDashboard, packetLoss, statusPage } from '@/data/links'
 </script>
 
 <template>
@@ -20,6 +20,7 @@ import { packetLoss, statusPage } from '@/data/links'
           </h2>
 
           <p>
+            <span class="overview-description">总览面板集中展示所有监测信息。</span>
             通过状态页面查看校园网络相关目标的实时监测结果，
             快速了解当前网络服务状态。
           </p>
@@ -30,6 +31,17 @@ import { packetLoss, statusPage } from '@/data/links'
 
           <a
             class="button"
+            :href="overviewDashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            查看信息总览
+
+            <AppIcon name="arrowRight" />
+          </a>
+
+          <a
+            class="button button-ghost"
             :href="statusPage"
             target="_blank"
             rel="noopener noreferrer"
